@@ -4,7 +4,7 @@ import argparse
 import torch
 import torch.backends.cudnn as cudnn
 import numpy as np
-from data import cfg_mnet, cfg_re50
+from data import cfg_mnet, cfg_re50, cfg_sls60, cfg_3net_m
 from layers.functions.prior_box import PriorBox
 from utils.nms.py_cpu_nms import py_cpu_nms
 import cv2
@@ -14,7 +14,7 @@ import time
 
 parser = argparse.ArgumentParser(description='Retinaface')
 
-parser.add_argument('-m', '--trained_model', default='./weights/Resnet50_Final.pth',
+parser.add_argument('-m', '--trained_model', default='./weights/Selecsls60_Final.pth',
                     type=str, help='Trained state_dict file path to open')
 parser.add_argument('--network', default='resnet50', help='Backbone network mobile0.25 or resnet50')
 parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')

@@ -5,7 +5,7 @@ import torch.optim as optim
 import torch.backends.cudnn as cudnn
 import argparse
 import torch.utils.data as data
-from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50
+from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50, cfg_sls60, cfg_3net_m
 from layers.modules import MultiBoxLoss
 from layers.functions.prior_box import PriorBox
 import time
@@ -34,7 +34,11 @@ if args.network == "mobile0.25":
     cfg = cfg_mnet
 elif args.network == "resnet50":
     cfg = cfg_re50
-
+elif args.network == "selecsls60":
+    cfg = cfg_sls60
+elif args.network == "tresnet_m":
+    cfg = cfg_3net_m
+    
 rgb_mean = (104, 117, 123) # bgr order
 num_classes = 2
 img_dim = cfg['image_size']
@@ -79,6 +83,7 @@ cudnn.benchmark = True
 
 
 optimizer = optim.SGD(net.parameters(), lr=initial_lr, momentum=momentum, weight_decay=weight_decay)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, max_epoch, eta_min=0, last_epoch=-1, verbose=False)
 criterion = MultiBoxLoss(num_classes, 0.35, True, 0, True, 7, 0.35, False)
 
 priorbox = PriorBox(cfg, image_size=(img_dim, img_dim))
@@ -115,7 +120,7 @@ def train():
         load_t0 = time.time()
         if iteration in stepvalues:
             step_index += 1
-        lr = adjust_learning_rate(optimizer, gamma, epoch, step_index, iteration, epoch_size)
+        #lr = adjust_learning_rate(optimizer, gamma, epoch, step_index, iteration, epoch_size)
 
         # load train data
         images, targets = next(batch_iterator)
@@ -131,6 +136,7 @@ def train():
         loss = cfg['loc_weight'] * loss_l + loss_c + loss_landm
         loss.backward()
         optimizer.step()
+        scheduler.step()
         load_t1 = time.time()
         batch_time = load_t1 - load_t0
         eta = int(batch_time * (max_iter - iteration))

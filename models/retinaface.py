@@ -70,9 +70,9 @@ class RetinaFace(nn.Module):
             import torchvision.models as models
             backbone = models.resnet50(pretrained=cfg['pretrain'])
             self.body = _utils.IntermediateLayerGetter(backbone, cfg['return_layers'])
-        elif args.network == "selecsls60":
+        elif cfg['name'] == 'selecsls60':
             self.body = timm.create_model('selecsls60', features_only=True, pretrained=True)
-        elif args.network == "tresnet_m":
+        elif cfg['name'] == 'tresnet_m':
             self.body = timm.create_model('tresnet_m', features_only=True, pretrained=True)
         in_channels_stage2 = cfg['in_channel']
         in_channels_list = [

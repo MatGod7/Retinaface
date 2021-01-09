@@ -91,7 +91,7 @@ class RetinaFace(nn.Module):
                 in_channels_stage2 * 32,
             ]
         elif cfg['name'] == 'effB0':
-            self.body = timm.create_model('efficientnet_b0', features_only=True, pretrained=True)
+            self.body = timm.create_model(cfg['name'], features_only=True, out_indices=(cfg['return_layers']), pretrained=cfg['pretrain'])
             in_channels_list = self.body.feature_info.channels()
         out_channels = cfg['out_channel']
         self.fpn = FPN(in_channels_list,out_channels)

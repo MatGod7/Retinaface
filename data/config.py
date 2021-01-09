@@ -50,7 +50,7 @@ cfg_sls60 = {
     'gpu_train': True,
     'batch_size': 32,
     'ngpu': 1,
-    'epoch': 250,
+    'epoch': 150,
     'decay1': 70,
     'decay2': 90,
     'image_size': 640,

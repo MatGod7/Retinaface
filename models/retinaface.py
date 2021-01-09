@@ -90,9 +90,14 @@ class RetinaFace(nn.Module):
                 in_channels_stage2 * 13,
                 in_channels_stage2 * 32,
             ]
-        elif cfg['name'] == 'effB0':
-            self.body = timm.create_model(cfg['name'], features_only=True, out_indices=(cfg['return_layers']), pretrained=cfg['pretrain'])
-            in_channels_list = self.body.feature_info.channels()
+        elif cfg['name'] == 'ese_vovnet39b':
+            self.body = timm.create_model('ese_vovnet39', features_only=True, pretrained=True)
+            in_channels_stage2 = cfg['in_channel']
+            in_channels_list = [
+                in_channels_stage2 * 8,
+                in_channels_stage2 * 12,
+                in_channels_stage2 * 16,
+            ]
         out_channels = cfg['out_channel']
         self.fpn = FPN(in_channels_list,out_channels)
         self.ssh1 = SSH(out_channels, out_channels)

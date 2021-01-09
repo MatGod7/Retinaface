@@ -57,7 +57,7 @@ cfg_sls60 = {
     'pretrain': True,
     'return_layers': {'layer2': 1, 'layer3': 2, 'layer4': 3},
     'in_channel': 32,
-    'out_channel': 1024
+    'out_channel': 64
 }
 
 cfg_3net_m = {

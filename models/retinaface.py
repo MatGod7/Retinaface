@@ -76,8 +76,8 @@ class RetinaFace(nn.Module):
             self.body = timm.create_model('tresnet_m', features_only=True, pretrained=True)
         in_channels_stage2 = cfg['in_channel']
         in_channels_list = [
-            in_channels_stage2 * 2,
-            in_channels_stage2 * 16,
+            in_channels_stage2 * 9,
+            in_channels_stage2 * 13,
             in_channels_stage2 * 32,
         ]
         out_channels = cfg['out_channel']

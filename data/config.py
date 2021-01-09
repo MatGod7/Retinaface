@@ -60,8 +60,8 @@ cfg_sls60 = {
     'out_channel': 64
 }
 
-cfg_3net_m = {
-    'name': 'tresnet_m',
+cfg_mnetv2 = {
+    'name': 'mobilenetv2_100',
     'min_sizes': [[16, 32], [64, 128], [256, 512]],
     'steps': [8, 16, 32],
     'variance': [0.1, 0.2],

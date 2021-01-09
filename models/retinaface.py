@@ -72,13 +72,13 @@ class RetinaFace(nn.Module):
             self.body = _utils.IntermediateLayerGetter(backbone, cfg['return_layers'])
         elif cfg['name'] == 'selecsls60':
             self.body = timm.create_model('selecsls60', features_only=True, pretrained=True)
-        elif cfg['name'] == 'tresnet_m':
-            self.body = timm.create_model('tresnet_m', features_only=True, pretrained=True)
+        elif cfg['name'] == 'mnetv2':
+            self.body = timm.create_model('mobilenetv2_100', features_only=True, pretrained=True)
         in_channels_stage2 = cfg['in_channel']
         in_channels_list = [
-            in_channels_stage2 * 9,
-            in_channels_stage2 * 13,
-            in_channels_stage2 * 32,
+            in_channels_stage2 * 2,
+            in_channels_stage2 * 6,
+            in_channels_stage2 * 20,
         ]
         out_channels = cfg['out_channel']
         self.fpn = FPN(in_channels_list,out_channels)

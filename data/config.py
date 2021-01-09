@@ -95,6 +95,6 @@ cfg_effB0 = {
     'image_size': 640,
     'pretrain': True,
     'return_layers': {2,3,4},
-    'in_channel': None,
+    'in_channel': 16,
     'out_channel': 64
 }

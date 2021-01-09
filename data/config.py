@@ -70,7 +70,7 @@ cfg_3net_m = {
     'gpu_train': True,
     'batch_size': 1, 
     'ngpu': 1,
-    'epoch': 2,
+    'epoch': 1,
     'decay1': 70,
     'decay2': 90,
     'image_size': 640,

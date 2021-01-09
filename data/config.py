@@ -61,7 +61,7 @@ cfg_sls60 = {
 }
 
 cfg_3net_m = {
-    'name': 'tresnet',
+    'name': 'tresnet_m',
     'min_sizes': [[16, 32], [64, 128], [256, 512]],
     'steps': [8, 16, 32],
     'variance': [0.1, 0.2],

@@ -66,20 +66,33 @@ class RetinaFace(nn.Module):
                 # load params
                 backbone.load_state_dict(new_state_dict)
             self.body = _utils.IntermediateLayerGetter(backbone, cfg['return_layers'])
+            in_channels_stage2 = cfg['in_channel']
+            in_channels_list = [
+                in_channels_stage2 * 2,
+                in_channels_stage2 * 4,
+                in_channels_stage2 * 8,
+            ]
         elif cfg['name'] == 'Resnet50':
             import torchvision.models as models
             backbone = models.resnet50(pretrained=cfg['pretrain'])
             self.body = _utils.IntermediateLayerGetter(backbone, cfg['return_layers'])
+            in_channels_stage2 = cfg['in_channel']
+            in_channels_list = [
+                in_channels_stage2 * 2,
+                in_channels_stage2 * 4,
+                in_channels_stage2 * 8,
+            ]
         elif cfg['name'] == 'selecsls60':
             self.body = timm.create_model('selecsls60', features_only=True, pretrained=True)
+            in_channels_stage2 = cfg['in_channel']
+            in_channels_list = [
+                in_channels_stage2 * 9,
+                in_channels_stage2 * 13,
+                in_channels_stage2 * 32,
+            ]
         elif cfg['name'] == 'effB0':
             self.body = timm.create_model('efficientnet_b0', features_only=True, pretrained=True)
-        in_channels_stage2 = cfg['in_channel']
-        in_channels_list = [
-            in_channels_stage2 * 2.5,
-            in_channels_stage2 * 7,
-            in_channels_stage2 * 20,
-        ]
+            in_channels_list = self.body.feature_info.channels()
         out_channels = cfg['out_channel']
         self.fpn = FPN(in_channels_list,out_channels)
         self.ssh1 = SSH(out_channels, out_channels)

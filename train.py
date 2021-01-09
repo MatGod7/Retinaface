@@ -5,7 +5,7 @@ import torch.optim as optim
 import torch.backends.cudnn as cudnn
 import argparse
 import torch.utils.data as data
-from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50, cfg_sls60, cfg_3net_m
+from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50, cfg_sls60, cfg_mnetv2
 from layers.modules import MultiBoxLoss
 from layers.functions.prior_box import PriorBox
 import time

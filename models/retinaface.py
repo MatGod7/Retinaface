@@ -65,9 +65,11 @@ class RetinaFace(nn.Module):
                     new_state_dict[name] = v
                 # load params
                 backbone.load_state_dict(new_state_dict)
+            self.body = _utils.IntermediateLayerGetter(backbone, cfg['return_layers'])
         elif cfg['name'] == 'Resnet50':
             import torchvision.models as models
             backbone = models.resnet50(pretrained=cfg['pretrain'])
+            self.body = _utils.IntermediateLayerGetter(backbone, cfg['return_layers'])
         elif args.network == "selecsls60":
             self.body = timm.create_model('selecsls60', features_only=True, pretrained=True)
         elif args.network == "tresnet_m":

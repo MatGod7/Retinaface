@@ -65,7 +65,7 @@ def load_model(model, pretrained_path, load_to_cpu):
     model.load_state_dict(pretrained_dict, strict=False)
     return model
 def transform(h, w):
-  im_h_new, img_w_new = int(np.ceil(h/32)*32), int(np.ceil(w/32)*32)
+  img_h_new, img_w_new = int(np.ceil(h/32)*32), int(np.ceil(w/32)*32)
   scale_h, scale_w = img_h_new / h, img_w_new/ w
   return img_h_new, img_w_new, scale_h, scale_w
   

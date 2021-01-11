@@ -55,7 +55,7 @@ cfg_sls60 = {
     'decay2': 220,
     'image_size': 640,
     'pretrain': True,
-    'return_layers': {2,3,4},
+    'return_layers': [2,3,4],
     'in_channel': None,
     'out_channel': 64
 }
@@ -74,7 +74,7 @@ cfg_vnet39 = {
     'decay2': 220,
     'image_size': 640,
     'pretrain': True,
-    'return_layers': {2,3,4},
+    'return_layers': [2,3,4],
     'in_channel': None,
     'out_channel': 64
 }

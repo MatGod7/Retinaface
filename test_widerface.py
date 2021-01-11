@@ -119,11 +119,11 @@ if __name__ == '__main__':
             resize = float(max_size) / float(im_size_max)
         if args.origin_size:
             resize = 1
-        #if resize != 1:
-        h, w, sh, sw = transform(img_raw.shape[0], img_raw.shape[1])
-        resize=sh
-        img = cv2.resize(img_raw, None, None, fx=sw, fy=sh, interpolation=cv2.INTER_LINEAR)
-        img = np.float32(img)
+        if resize != 1:
+          h, w, sh, sw = transform(img_raw.shape[0], img_raw.shape[1])
+          resize=sh
+          img = cv2.resize(img_raw, None, None, fx=sw, fy=sh, interpolation=cv2.INTER_LINEAR)
+          img = np.float32(img)
         im_height, im_width, _ = img.shape
         scale = torch.Tensor([img.shape[1], img.shape[0], img.shape[1], img.shape[0]])
         img -= (104, 117, 123)

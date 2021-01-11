@@ -51,12 +51,12 @@ cfg_sls60 = {
     'batch_size': 1,
     'ngpu': 1,
     'epoch': 2,
-    'decay1': 70,
-    'decay2': 90,
+    'decay1': 190,
+    'decay2': 220,
     'image_size': 640,
     'pretrain': True,
-    'return_layers': {'layer2': 1, 'layer3': 2, 'layer4': 3},
-    'in_channel': 32,
+    'return_layers': {2,3,4},
+    'in_channel': None,
     'out_channel': 64
 }
 cfg_vnet39 = {
@@ -70,11 +70,11 @@ cfg_vnet39 = {
     'batch_size': 1, 
     'ngpu': 1,
     'epoch': 2,
-    'decay1': 70,
-    'decay2': 90,
+    'decay1': 190,
+    'decay2': 220,
     'image_size': 640,
     'pretrain': True,
-    'return_layers': {'layer2': 1, 'layer3': 2, 'layer4': 3},
-    'in_channel': 64,
+    'return_layers': {2,3,4},
+    'in_channel': None,
     'out_channel': 64
 }

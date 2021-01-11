@@ -83,7 +83,7 @@ class RetinaFace(nn.Module):
                 in_channels_stage2 * 8,
             ]
         elif cfg['name'] == 'selecsls60':
-            self.body = timm.create_model('selecsls60', features_only=True, pretrained=True)
+            self.body = timm.create_model('selecsls60', features_only=True, out_indices=(cfg['return_layers']), pretrained=cfg['pretrain'])
             in_channels_stage2 = cfg['in_channel']
             in_channels_list = [
                 in_channels_stage2 * 9,
@@ -91,7 +91,7 @@ class RetinaFace(nn.Module):
                 in_channels_stage2 * 32,
             ]
         elif cfg['name'] == 'ese_vovnet39b':
-            self.body = timm.create_model('ese_vovnet39b', features_only=True, pretrained=True)
+            self.body = timm.create_model('ese_vovnet39b', features_only=True, out_indices=(cfg['return_layers']), pretrained=cfg['pretrain'])
             in_channels_stage2 = cfg['in_channel']
             in_channels_list = [
                 in_channels_stage2 * 8,
@@ -128,7 +128,7 @@ class RetinaFace(nn.Module):
 
     def forward(self,inputs):
         out = self.body(inputs)
-        out = OrderedDict((i+1, v) for (i, v) in enumerate(out[-3:]))
+        #out = OrderedDict((i+1, v) for (i, v) in enumerate(out[-3:]))
         # FPN
         fpn = self.fpn(out)
 

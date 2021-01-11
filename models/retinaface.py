@@ -118,7 +118,7 @@ class RetinaFace(nn.Module):
 
     def forward(self,inputs):
         out = self.body(inputs)
-        out = OrderedDict((i+1, v) for (i, v) in enumerate(out[-3:]))
+        #out = OrderedDict((i+1, v) for (i, v) in enumerate(out[-3:]))
         # FPN
         fpn = self.fpn(out)
 

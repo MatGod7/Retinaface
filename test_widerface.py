@@ -200,7 +200,7 @@ if __name__ == '__main__':
                 line = str(x) + " " + str(y) + " " + str(w) + " " + str(h) + " " + confidence + " \n"
                 fd.write(line)
 
-        print('im_detect: {:d}/{:d}\r forward_pass_time: {:.4f}s\r misc: {:.4f}s\r'.format(i + 1, num_images, _t['forward_pass'].average_time, _t['misc'].average_time))
+        print('im_detect: {:d}/{:d} forward_pass_time: {:.4f}s misc: {:.4f}s'.format(i + 1, num_images, _t['forward_pass'].average_time, _t['misc'].average_time), end="\r")
 
         # save image
         if args.save_image:

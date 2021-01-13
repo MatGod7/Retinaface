@@ -56,8 +56,8 @@ training_dataset = args.training_dataset
 save_folder = args.save_folder
 
 net = RetinaFace(cfg=cfg)
-print("Printing net...")
-print(net)
+#print("Printing net...")
+#print(net)
 
 if args.resume_net is not None:
     print('Loading resume network...')
@@ -82,7 +82,7 @@ else:
 cudnn.benchmark = True
 
 
-optimizer = optim.SGD(net.parameters(), lr=0.00023208, momentum=momentum, weight_decay=weight_decay)
+optimizer = optim.SGD(net.parameters(), lr=initial_lr, momentum=momentum, weight_decay=weight_decay)
 criterion = MultiBoxLoss(num_classes, 0.35, True, 0, True, 7, 0.35, False)
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epoch)
 priorbox = PriorBox(cfg, image_size=(img_dim, img_dim))

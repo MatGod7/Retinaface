@@ -85,8 +85,8 @@ class RetinaFace(nn.Module):
         elif cfg['name'] == 'selecsls60':
             self.body = timm.create_model('selecsls60', features_only=True, out_indices=(cfg['return_layers']), pretrained=cfg['pretrain'])
             in_channels_list = self.body.feature_info.channels()
-        elif cfg['name'] == 'ese_vovnet39b':
-            self.body = timm.create_model('ese_vovnet39b', features_only=True, out_indices=(cfg['return_layers']), pretrained=cfg['pretrain'])
+        elif cfg['name'] == 'mobilenetv3_large_100':
+            self.body = timm.create_model('mobilenetv3_large_100', features_only=True, out_indices=(cfg['return_layers']), pretrained=cfg['pretrain'])
             in_channels_list = self.body.feature_info.channels()
         out_channels = cfg['out_channel']
         self.fpn = FPN(in_channels_list,out_channels)

@@ -1,10 +1,10 @@
-from __future__ import print_function
+lfrom __future__ import print_function
 import os
 import argparse
 import torch
 import torch.backends.cudnn as cudnn
 import numpy as np
-from data import cfg_mnet, cfg_re50, cfg_sls60, cfg_vnet39
+from data import cfg_mnet, cfg_re50, cfg_sls60, cfg_mnetl100
 from layers.functions.prior_box import PriorBox
 from utils.nms.py_cpu_nms import py_cpu_nms
 import cv2
@@ -79,8 +79,8 @@ if __name__ == '__main__':
         cfg = cfg_re50
     elif args.network == "selecsls60":
         cfg = cfg_sls60
-    elif args.network == "ese_vovnet39b":
-        cfg = cfg_vnet39
+    elif args.network == "mobilenetv3_large_100":
+        cfg = cfg_mnetl100
     # net and model
     net = RetinaFace(cfg=cfg, phase = 'test')
     net = load_model(net, args.trained_model, args.cpu)

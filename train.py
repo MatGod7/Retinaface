@@ -5,7 +5,7 @@ import torch.optim as optim
 import torch.backends.cudnn as cudnn
 import argparse
 import torch.utils.data as data
-from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50, cfg_sls60, cfg_vnet39
+from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50, cfg_sls60, cfg_mnetl100
 from layers.modules import MultiBoxLoss
 from layers.functions.prior_box import PriorBox
 import time
@@ -23,7 +23,7 @@ parser.add_argument('--resume_net', default=None, help='resume net for retrainin
 parser.add_argument('--resume_epoch', default=0, type=int, help='resume iter for retraining')
 parser.add_argument('--weight_decay', default=5e-4, type=float, help='Weight decay for SGD')
 parser.add_argument('--gamma', default=0.1, type=float, help='Gamma update for SGD')
-parser.add_argument('--save_folder', default='./weights_adamP/', help='Location to save checkpoint models')
+parser.add_argument('--save_folder', default='./weights_2/', help='Location to save checkpoint models')
 
 args = parser.parse_args()
 
@@ -36,8 +36,8 @@ elif args.network == "resnet50":
     cfg = cfg_re50
 elif args.network == "selecsls60":
     cfg = cfg_sls60
-elif args.network == "ese_vovnet39b":
-    cfg = cfg_vnet39
+elif args.network == "mobilenetv3_large_100":
+    cfg = cfg_mnetl100
     
 rgb_mean = (104, 117, 123) # bgr order
 num_classes = 2
@@ -82,13 +82,13 @@ else:
 cudnn.benchmark = True
 
 
-#optimizer = optim.SGD(net.parameters(), lr=initial_lr, momentum=momentum, weight_decay=weight_decay)
+optimizer = optim.SGD(net.parameters(), lr=initial_lr, momentum=momentum, weight_decay=weight_decay)
 #from adamp import SGDP
 #optimizer = optim.SGD(net.parameters(), lr=initial_lr, momentum=momentum, weight_decay=weight_decay)
-from adamp import AdamP
-optimizer = AdamP(net.parameters(), lr=initial_lr, betas=(0.9, 0.999), weight_decay=weight_decay)
-criterion = MultiBoxLoss(num_classes, 0.35, True, 0, True, 7, 0.35, False)
-#scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epoch)
+#from adamp import AdamP
+#optimizer = AdamP(net.parameters(), lr=initial_lr, betas=(0.9, 0.999), weight_decay=weight_decay)
+#criterion = MultiBoxLoss(num_classes, 0.35, True, 0, True, 7, 0.35, False)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epoch)
 priorbox = PriorBox(cfg, image_size=(img_dim, img_dim))
 with torch.no_grad():
     priors = priorbox.forward()
@@ -115,8 +115,8 @@ def train():
     for iteration in range(start_iter, max_iter):
         if iteration % epoch_size == 0:
             # create batch iterator
-            #if iteration > start_iter:
-            #    scheduler.step()
+            if iteration > start_iter:
+                scheduler.step()
             batch_iterator = iter(data.DataLoader(dataset, batch_size, shuffle=True, num_workers=num_workers, collate_fn=detection_collate))
             if (epoch % 10 == 0 and epoch > 0) or (epoch % 5 == 0 and epoch > cfg['decay1']):
                 torch.save(net.state_dict(), save_folder + cfg['name']+ '_epoch_' + str(epoch) + '.pth')
@@ -144,9 +144,9 @@ def train():
         load_t1 = time.time()
         batch_time = load_t1 - load_t0
         eta = int(batch_time * (max_iter - iteration))
-        print('Epoch:{}/{} || Epochiter: {}/{} || Iter: {}/{} || Loc: {:.4f} Cla: {:.4f} Landm: {:.4f} || Batchtime: {:.4f} s || ETA: {}'
+        print('Epoch:{}/{} || Epochiter: {}/{} || Iter: {}/{} || Loc: {:.4f} Cla: {:.4f} Landm: {:.4f} || LR: {:.8f} || Batchtime: {:.4f} s || ETA: {}'
               .format(epoch, max_epoch, (iteration % epoch_size) + 1,
-              epoch_size, iteration + 1, max_iter, loss_l.item(), loss_c.item(), loss_landm.item(), batch_time, str(datetime.timedelta(seconds=eta))))
+              epoch_size, iteration + 1, max_iter, loss_l.item(), loss_c.item(), loss_landm.item(), scheduler.get_last_lr()[0], batch_time, str(datetime.timedelta(seconds=eta))))
 
     torch.save(net.state_dict(), save_folder + cfg['name'] + '_Final.pth')
     # torch.save(net.state_dict(), save_folder + 'Final_Retinaface.pth')

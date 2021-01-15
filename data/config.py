@@ -59,8 +59,8 @@ cfg_sls60 = {
     'in_channel': None,
     'out_channel': 64
 }
-cfg_vnet39 = {
-    'name': 'ese_vovnet39b',
+cfg_mnetl100 = {
+    'name': 'mobilenetv3_large_100',
     'min_sizes': [[16, 32], [64, 128], [256, 512]],
     'steps': [8, 16, 32],
     'variance': [0.1, 0.2],
